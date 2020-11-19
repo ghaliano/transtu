@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Recherche{% endblock %}
+
+{% block body %}
+{{ form(formSearch) }}
+{{dump(engines)}}
+    <table class="table">
+    {% for engine in engines%}
+        <tr>
+        <td>{{ engine.name }}</td>
+        {% for timing in engine.timing %}
+        <td>{{ timing.station_name }}<br/>
+        <small><b>{{ timing.arrival_at }}</b></small>
+        </td>
+        {% endfor %}
+        </tr>
+    {% endfor %}
+    </table>
+{% endblock %}

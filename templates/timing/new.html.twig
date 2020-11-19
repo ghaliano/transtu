@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Timing{% endblock %}
+
+{% block body %}
+    <h1>Create new Timing</h1>
+
+    {{ include('timing/_form.html.twig') }}
+
+    <a href="{{ path('timing_index') }}">back to list</a>
+{% endblock %}

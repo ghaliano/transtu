@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Timing{% endblock %}
+
+{% block body %}
+    <h1>Timing</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ timing.id }}</td>
+            </tr>
+            <tr>
+                <th>Arrival_at</th>
+                <td>{{ timing.arrivalAt ? timing.arrivalAt|date('H:i:s') : '' }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('timing_index') }}">back to list</a>
+
+    <a href="{{ path('timing_edit', {'id': timing.id}) }}">edit</a>
+
+    {{ include('timing/_delete_form.html.twig') }}
+{% endblock %}
