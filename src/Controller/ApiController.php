@@ -17,16 +17,8 @@ class ApiController extends AbstractController
     public function recherche(Request $request): Response
     {
 
-        $startStation = $this->getDoctrine()
-            ->getRepository(Station::class)
-            ->find($request->get('start_station'));
-
-        $endStation = $this->getDoctrine()
-            ->getRepository(Station::class)
-            ->find($request->get('end_station'));
-
         $engines = $this->getDoctrine()
-            ->getRepository(Path::class)->getPath($startStation, $endStation);
+            ->getRepository(Path::class)->getPath($request->get('start_station'), $request->get('end_station'));
 
         return $this->json($engines);
     }

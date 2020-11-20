@@ -49,7 +49,7 @@ class PathRepository extends ServiceEntityRepository
     }
     */
 
-    public function getPath ( Station $startStation, Station $endStation )
+    public function getPath ( $startStation, $endStation )
     {
        $QUERY = "SELECT  e.name as engine_name , arrival_at, s.id, rang, p.ligne_id, p.station_id, s.name as station_name,
        ( SELECT ligne_id FROM PATH WHERE station_id = :start_station  LIMIT 1 ) AS line1,
@@ -66,8 +66,8 @@ class PathRepository extends ServiceEntityRepository
 
             $statement = $this->_em->getConnection()->prepare($QUERY);
             $statement->execute([
-                'start_station' => $startStation->getId() ,
-                'end_station' => $endStation->getId() ,
+                'start_station' => $startStation ,
+                'end_station' => $endStation ,
             ]);
             
             $result = [];
