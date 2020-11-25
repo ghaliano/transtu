@@ -19,6 +19,7 @@ security:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
         api:
+            anonymous: true
             pattern: ^/api
             security: true
             provider: api_user_provider
