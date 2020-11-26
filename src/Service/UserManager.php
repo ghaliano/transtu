@@ -20,7 +20,6 @@ class UserManager {
         $user->setPassword($this->passwordEncoder->encodePassword($user, $user->getPlainPassword()));
         $this->entityManager->persist($user);
         $this->entityManager->flush();
-
     
     }
 }
