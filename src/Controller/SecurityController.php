@@ -10,9 +10,22 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use App\Service\UserManager ;
 use App\Entity\User;
 use App\Form\SignUpType;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\Security\Core\Exception\CustomUserMessageAuthenticationException;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 class SecurityController extends AbstractController
 {
+
+    private $entityManager;
+    private $passwordEncoder;
+
+    public function __construct(EntityManagerInterface $entityManager, UserPasswordEncoderInterface $passwordEncoder)
+    {
+        $this->entityManager = $entityManager;
+        $this->passwordEncoder = $passwordEncoder;
+    }
     /**
      * @Route("/login", name="app_login")
      */
@@ -30,6 +43,31 @@ class SecurityController extends AbstractController
         return $this->render('security/login.html.twig', ['last_username' => $lastUsername, 'error' => $error]);
     }
 
+    
+    /**
+     * @Route("/signin", name="loginapi")
+     */
+    public function apiLogin(Request $request): Response
+    {
+        $data = json_decode($request->getContent(), true);
+
+        $user = $this->entityManager->getRepository(User::class)->findOneBy(['email' => $data['email']]);
+
+        if (!$user) {
+            return $this->json('Email could not be found.');
+        }
+
+        if(!$this->checkCredentials($data, $user)){
+            return $this->json('incorrect password');
+        }
+
+        return $this->json($user);
+    }
+
+    public function checkCredentials($credentials, UserInterface $user)
+    {
+        return $this->passwordEncoder->isPasswordValid($user, $credentials['password']);
+    }
     /**
      * @Route("/logout", name="app_logout")
      */
